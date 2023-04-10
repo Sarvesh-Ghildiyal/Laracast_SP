@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,30 +21,37 @@ Route::get('/', function () {
 
 Route::get('/posts/{post}',function($slug){
     
+    // Find a post with its slug and pass it to view called "$post" the variable in post page
+
+    $post=Post::find($slug);
     
-    $path = __DIR__ . '/../resources/posts/my-first-post.html';
-
-    if(! file_exists($path)){
-        ddd('file is not found');
-    }
-
-    //Creating cache for the file
-
-    $post=cache()->remember("posts",5,function() use($path){
-        var_dump('file_get_content');
-        return file_get_contents($path);
-    });
-
-    // // shorter version
-    // $post=cache()->remember("posts",5,fn()=>file_get_contents($path));
-
-    // $post=$slug;
-
-    $post=file_get_contents($path);
-
     return view('post',[
-
         'post'=>$post
     ]);
+
+    // $path = __DIR__ . '/../resources/posts/my-first-post.html';
+
+    // if(! file_exists($path)){
+    //     ddd('file is not found');
+    // }
+
+    // //Creating cache for the file
+
+    // $post=cache()->remember("posts",5,function() use($path){
+    //     var_dump('file_get_content');
+    //     return file_get_contents($path);
+    // });
+
+    // // // shorter version
+    // // $post=cache()->remember("posts",5,fn()=>file_get_contents($path));
+
+    // // $post=$slug;
+
+    // $post=file_get_contents($path);
+
+    // return view('post',[
+
+    //     'post'=>$post
+    // ]);
 })->where('post','[A-z_\-]+');
 
