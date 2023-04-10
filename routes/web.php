@@ -22,11 +22,21 @@ Route::get('/', function () {
 Route::get('/posts/{post}',function($slug){
     
     
-    $path = __DIR__ . '/../resources/posts/{$slug}.html';
+    $path = __DIR__ . '/../resources/posts/my-first-post.html';
 
     if(! file_exists($path)){
         ddd('file is not found');
     }
+
+    //Creating cache for the file
+
+    $post=cache()->remember("posts",5,function() use($path){
+        var_dump('file_get_content');
+        return file_get_contents($path);
+    });
+
+    // // shorter version
+    // $post=cache()->remember("posts",5,fn()=>file_get_contents($path));
 
     // $post=$slug;
 
